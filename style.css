@@ -1,0 +1,128 @@
+.orbitron-600 {
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+:root {
+  --vw: 100vw;
+  --vh: 100vh;
+  --dial-size: clamp(1rem, -0.091rem + 5.45vmin, 4rem);
+  --display-size: calc(100vmin * 0.9);
+  --content-size: calc(var(--display-size) + var(--dial-size));
+  --hand-size: calc((var(--display-size) / 2));
+  --hour-hand-size: calc(var(--hand-size) * 0.6);
+  --minute-hand-size: calc(var(--hand-size) * 0.9);
+  --second-hand-size: calc(var(--hand-size) * 0.9);
+  --font-size: clamp(1rem, -0.091rem + 5.45vmin, 4rem);
+}
+
+html {
+  /* font-size: 62.5%; */
+  font-family: "Orbitron", sans-serif;
+}
+
+body {
+  background: #000;
+}
+
+.wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.content {
+  position: absolute;
+  height: var(--content-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+#dials {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.dial {
+  position: absolute;
+  font-size: var(--font-size);
+  font-weight: bold;
+  color: #ddd;
+  width: var(--dial-size);
+  height: var(--dial-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tick {
+  width: 1px;
+  height: 5px;
+  background: #ddd;
+  border: 1px solid #999;
+}
+
+.tick.tick-long {
+  width: 1px;
+  height: 15px;
+  background: #7e4c17;
+  border: 1px solid #7e4c17;
+}
+
+.hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 2px 2px;
+  transform: rotate(-90deg);
+}
+
+#hour-hand {
+  height: 4px;
+  width: var(--hour-hand-size);
+  background-color: #ddd;
+}
+
+#minute-hand {
+  height: 4px;
+  width: var(--minute-hand-size);
+  background-color: #ddd;
+}
+
+#second-hand {
+  height: 2px;
+  width: var(--second-hand-size);
+  background-color: #efbc99;
+}
+
+.datetime {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  color: #ddd;
+  font-size: var(--font-size);
+  font-weight: bold;
+  letter-spacing: 0.6rem;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+#date {
+  top: 30%;
+}
+
+#week {
+  top: 35%;
+}
+
+#time {
+  top: 45%;
+}
