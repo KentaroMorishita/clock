@@ -1,9 +1,16 @@
+const getDisplaySize = () =>
+  (Math.min(window.innerWidth, window.innerHeight) * 0.9) / 2
 
-const offset = { x: 200, y: 200 }
-const radius = 200
+const offset = {
+  x: getDisplaySize(),
+  y: getDisplaySize(),
+  radius: getDisplaySize(),
+}
 
-const clock = document.getElementById("clock")
-const dials = document.getElementById("dials")
+const date = document.querySelector("#date")
+const week = document.querySelector("#week")
+const time = document.querySelector("#time")
+const dials = document.querySelector("#dials")
 
 const rad = (angle) => (angle * Math.PI) / 180
 
@@ -14,9 +21,9 @@ const createDial = () => {
     dial.textContent = i
     dials.appendChild(dial)
 
-    const angle = -90 + (i % 12) * 30
-    const x = offset.x + (radius - 30) * Math.cos(rad(angle))
-    const y = offset.y + (radius - 30) * Math.sin(rad(angle))
+    const angle = -90 + i * (360 / 12)
+    const x = offset.x + offset.radius * 0.7 * Math.cos(rad(angle))
+    const y = offset.y + offset.radius * 0.7 * Math.sin(rad(angle))
 
     dial.setAttribute("style", `top: ${y}px; left: ${x}px`)
   }
@@ -28,9 +35,9 @@ const createScale = () => {
     scale.setAttribute("class", `dial`)
     dials.appendChild(scale)
 
-    const angle = -90 + i * 6
-    const x = offset.x + radius * Math.cos(rad(angle))
-    const y = offset.y + radius * Math.sin(rad(angle))
+    const angle = -90 + i * (360 / 60)
+    const x = offset.x + offset.radius * Math.cos(rad(angle))
+    const y = offset.y + offset.radius * Math.sin(rad(angle))
 
     const tick = document.createElement("div")
     tick.setAttribute("class", `tick`)
@@ -48,25 +55,40 @@ const createScale = () => {
 }
 
 const ticktack = () => {
-  const hourHand = document.getElementById("hour-hand")
-  const minuteHand = document.getElementById("minute-hand")
-  const secondHand = document.getElementById("second-hand")
-
+  const hourHand = document.querySelector("#hour-hand")
+  const minuteHand = document.querySelector("#minute-hand")
+  const secondHand = document.querySelector("#second-hand")
+  const weeks = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
   setInterval(() => {
     const now = new Date()
-    let hour = Math.floor(now.getHours()) % 12 * 30
-    let minute = Math.floor(now.getMinutes()) * 6
-    let second = Math.floor(now.getSeconds()) * 6
-    console.log(hour, minute, second)
+    const [h, m, s] = [now.getHours(), now.getMinutes(), now.getSeconds()]
+    const f = (a, b) => (Math.floor(a) * (360 / b)) % 360
+    const [hour, minute, second] = [
+      f(h, 12) + f(m, 60) / 12,
+      f(m, 60),
+      f(s, 60),
+    ].map((v) => v - 90)
 
-    hourHand.setAttribute("style", `transform: rotate(${hour-90}deg)`)
-    minuteHand.setAttribute("style", `transform: rotate(${minute-90}deg)`)
-    secondHand.setAttribute("style", `transform: rotate(${second-90}deg)`)
-    clock.textContent = new Date().toLocaleTimeString()
+    hourHand.setAttribute("style", `transform: rotate(${hour}deg)`)
+    minuteHand.setAttribute("style", `transform: rotate(${minute}deg)`)
+    secondHand.setAttribute("style", `transform: rotate(${second}deg)`)
+    date.textContent = now.toLocaleDateString()
+    week.textContent = weeks[now.getDay()]
+    time.textContent = now.toLocaleTimeString()
   }, 1000)
 }
 
 createScale()
 createDial()
 ticktack()
+
+window.addEventListener("resize", () => {
+  offset.x = getDisplaySize()
+  offset.y = getDisplaySize()
+  offset.radius = getDisplaySize()
+
+  dials.innerHTML = ""
+  createScale()
+  createDial()
+})
