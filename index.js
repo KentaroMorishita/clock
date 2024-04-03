@@ -63,12 +63,18 @@ const ticktack = () => {
 
   setInterval(() => {
     const now = new Date()
-    const [h, m, s] = [now.getHours(), now.getMinutes(), now.getSeconds()]
+    const [h, m, s, ms] = [
+      now.getHours(),
+      now.getMinutes(),
+      now.getSeconds(),
+      now.getMilliseconds(),
+    ]
+
     const f = (a, b) => (Math.floor(a) * (360 / b)) % 360
     const [hour, minute, second] = [
       f(h, 12) + f(m, 60) / 12,
-      f(m, 60),
-      f(s, 60),
+      f(m, 60) + f(s, 60) / 60,
+      f(s, 60) + f(ms, 1000) / 60,
     ].map((v) => v - 90)
 
     hourHand.setAttribute("style", `transform: rotate(${hour}deg)`)
@@ -77,7 +83,7 @@ const ticktack = () => {
     date.textContent = now.toLocaleDateString()
     week.textContent = weeks[now.getDay()]
     time.textContent = now.toLocaleTimeString()
-  }, 1000)
+  }, 1)
 }
 
 createScale()
