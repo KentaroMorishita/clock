@@ -1,16 +1,17 @@
+const display = document.querySelector(".display")
+const date = document.querySelector("#date")
+const week = document.querySelector("#week")
+const time = document.querySelector("#time")
+const dials = document.querySelector("#dials")
+
 const getDisplaySize = () =>
-  (Math.min(window.innerWidth, window.innerHeight) * 0.9) / 2
+  Math.min(display.clientWidth, display.clientHeight) / 2
 
 const offset = {
   x: getDisplaySize(),
   y: getDisplaySize(),
   radius: getDisplaySize(),
 }
-
-const date = document.querySelector("#date")
-const week = document.querySelector("#week")
-const time = document.querySelector("#time")
-const dials = document.querySelector("#dials")
 
 const rad = (angle) => (angle * Math.PI) / 180
 
@@ -22,8 +23,8 @@ const createDial = () => {
     dials.appendChild(dial)
 
     const angle = -90 + i * (360 / 12)
-    const x = offset.x + offset.radius * 0.7 * Math.cos(rad(angle))
-    const y = offset.y + offset.radius * 0.7 * Math.sin(rad(angle))
+    const x = offset.x + offset.radius * 0.8 * Math.cos(rad(angle))
+    const y = offset.y + offset.radius * 0.8 * Math.sin(rad(angle))
 
     dial.setAttribute("style", `top: ${y}px; left: ${x}px`)
   }

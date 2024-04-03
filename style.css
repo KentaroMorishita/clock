@@ -8,14 +8,14 @@
 :root {
   --vw: 100vw;
   --vh: 100vh;
-  --dial-size: clamp(1rem, -0.091rem + 5.45vmin, 4rem);
-  --display-size: calc(100vmin * 0.9);
+  --display-size: calc(100vmin * 0.8);
+  --font-size: clamp(1.8rem, 0.01rem + var(--display-size) * 0.06, 3rem);
+  --dial-size: clamp(1.8rem, 0.01rem + var(--display-size) * 0.06, 3rem);
   --content-size: calc(var(--display-size) + var(--dial-size));
-  --hand-size: calc((var(--display-size) / 2));
+  --hand-size: calc((var(--display-size) / 2) - var(--dial-size));
   --hour-hand-size: calc(var(--hand-size) * 0.6);
   --minute-hand-size: calc(var(--hand-size) * 0.9);
-  --second-hand-size: calc(var(--hand-size) * 0.9);
-  --font-size: clamp(1rem, -0.091rem + 5.45vmin, 4rem);
+  --second-hand-size: calc(var(--hand-size) * 1);
 }
 
 html {
@@ -35,9 +35,17 @@ body {
   height: 100vh;
 }
 
+.display {
+  position: absolute;
+  width: var(--display-size);
+  height: var(--display-size);
+}
+
 .content {
   position: absolute;
   height: var(--content-size);
+  top: calc(0px - var(--dial-size) / 2);
+  left: calc(0px - var(--dial-size) / 2);
   aspect-ratio: 1;
   border-radius: 50%;
 }
@@ -64,43 +72,58 @@ body {
 }
 
 .tick {
-  width: 1px;
+  width: 5px;
   height: 5px;
   background: #ddd;
   border: 1px solid #999;
+  border-radius: 50%;
 }
 
 .tick.tick-long {
-  width: 1px;
+  width: 5px;
   height: 15px;
   background: #7e4c17;
   border: 1px solid #7e4c17;
+  border-radius: 0;
+}
+
+.hand-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--dial-size) / 2.5);
+  aspect-ratio: 1;
+  background: #7e4c17;
+  box-shadow: 0 0 0 3px #ddd;
+  border-radius: 50%;
+  z-index: 1;
 }
 
 .hand {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: 2px 2px;
+  top: calc(50%);
+  left: calc(50%);
+  transform-origin: 0 0;
   transform: rotate(-90deg);
+  height: 0;
+  background: #ddd;
+  box-shadow: 0 0 0 4px #ddd;
 }
 
 #hour-hand {
-  height: 4px;
   width: var(--hour-hand-size);
-  background-color: #ddd;
 }
 
 #minute-hand {
-  height: 4px;
   width: var(--minute-hand-size);
-  background-color: #ddd;
 }
 
 #second-hand {
-  height: 2px;
   width: var(--second-hand-size);
-  background-color: #efbc99;
+  background: #7e4c17;
+  box-shadow: 0 0 0 2px #7e4c17;
+  z-index: 2;
 }
 
 .datetime {
